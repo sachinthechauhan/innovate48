@@ -1,0 +1,86 @@
+version: '2.1'
+services:
+  jetqa:
+    build:
+        dockerfile: jetqa/Dockerfile
+        context: .
+    depends_on:
+        was:
+          condition: service_healthy
+    restart: always
+    ports:
+      - "9797:8080"
+    volumes:
+      - fileshare:/tmp/fileshare:z
+#      - reportshare:/tmp/fileshare_qa/report/:z
+      - /tmp/logshare/was:/tmp/logshare/was
+      - /tmp/fileshare_qa/report/edw:/tmp/fileshare/report/edw
+      - /tmp/fileshare_qa/report/gl:/tmp/fileshare/report/gl
+      - /tmp/fileshare_qa/report/audit:/tmp/fileshare/report/audit
+
+  mq:
+    image: docker.clear2pay.com/c2p-base/base-mq:9.0.0.7-45
+    restart: always
+    volumes:
+       - ./delivery/config:/tmp/delivery/config:ro
+    ports:
+      - "1414:1414"
+    stop_grace_period: 5m
+    environment:
+          CONFIG_FILES: siamph_config_file.yaml
+          MQ_QMGR_NAME: opf.queue.manager
+          ADDITIONAL_CONFIG_SCRIPTS: additional_qm_settings.mqsc
+    command: ["/var/mqm/scripts/run_mq.sh", "--configure"]
+    labels:
+          "logs": "/var/mqm/qmgrs/opf!queue!manager/errors/[*.LOG]"
+  db:
+    build:
+        dockerfile: oracle/Dockerfile
+        context: .
+    environment:
+          LOGS: /oracle/diag/rdbms/bph/bph/[*.xml,*.log] /home/oracle/deploy[*log]
+    restart: always
+    ports:
+      - "1521:1521"
+  was:
+    build:
+        dockerfile: was/Dockerfile
+        context: .
+    hostname: was
+    environment:
+          config_list: opf_was_variables.py opf_was_ora_variables.py opf_was_param.py opf_was_85.py siamph_was_ora.py siamph_was_queue_list.py siamph_was_85_mq.py siamph_was_85_jvm.py siamph_was_85_jvm_generic_arg.py siamph_was_namespace_binding.py siamph_was_test_qa_configuration.py siamph_was_certs_supported.py siamph_was_ejbtimer_configuration.py
+          deploy_list: SIAMPHBankVisibilityEAR SIAMPHServicesEAR SIAMPHTestVisibilityEAR
+          LOGS: /opt/ibm/WebSphere/AppServer/profiles/server1/logs/server1
+          SERVER_LOG_ROOT: /opt/ibm/WebSphere/AppServer/profiles/server1/logs/server1/
+    depends_on:
+        mq:
+          condition: service_healthy
+        db:
+          condition: service_healthy
+    restart: always
+    ports:
+         - "2809:2809"
+         - "7276:7276"
+         - "7286:7286"
+         - "7777:7777"
+         - "8849:8849"
+         - "9043:9043"
+         - "9403:9403"
+         - "9443:9443"
+         - "8880:8880"
+         - "9100:9100"
+    volumes:
+          - fileshare:/tmp/fileshare:z
+#         - reportshare:/tmp/fileshare_qa/report/:z
+#         - /tmp/logshare/was:/opt/ibm/WebSphere/AppServer/profiles/server1/logs
+          - /tmp/fileshare_qa/report/edw:/tmp/fileshare_qa/report/edw
+          - /tmp/fileshare_qa/report/gl:/tmp/fileshare_qa/report/gl
+          - /tmp/fileshare_qa/report/audit:/tmp/fileshare_qa/report/audit
+
+    links:
+         - db:dbserver
+         - mq:mq
+
+volumes:
+  fileshare:
+  reportshare:
