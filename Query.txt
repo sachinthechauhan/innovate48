@@ -1,0 +1,43 @@
+"SELECT
+                                t.paymentTransactionKey entityKey,
+                                t.ENDTOENDIDIDX endToEndId,
+                                t.DEBITPARTYCONTACTOTHERIDX debitPartyContactOther,
+                                t.DEBITPARTYIDIDX debitPartyId,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/Dbtr/Nm') debitPartyName,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/DbtrAcct/Nm') debitPartyAccountName,
+                                t.DEBITPARTYACCOUNTIDX debitPartyAccount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/UndrlygCstmrCdtTrf/DbtrAcct/Nm') relatedDebitPartyAccountName,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/UndrlygCstmrCdtTrf/DbtrAcct/Ccy') relatedDebitPartyAccountCurr,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/Cdtr/CtctDtls/Othr') creditPartyContactOther,
+                                t.CREDITPARTYIDIDX creditPartyId,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/Cdtr/Nm') creditPartyName,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/CdtrAcct/Nm') creditPartyAccountName,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/UndrlygCstmrCdtTrf/CdtrAcct/Nm') relatedCreditPartyAccountName,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/InstdAmt') instructedAmount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/InstdAmt/@Ccy') instructedCurrency,
+                                t.settlementAmountIdx settlementAmount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/rTrn/SttlmInf/IntrBkSttlmAmt') originalSettlementAmount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/Chrgs[1]/ChrgsAmt') charges1Amount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/Chrgs[2]/ChrgsAmt') charges2Amount,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/RmtInf/Strd[1]/AddtlRmtInf[1]') remittance1AdditionalInf,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/RmtInf/Strd[1]/AddtlRmtInf[2]') remittance1AdditionalInf2,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/RmtInf/Strd[1]/AddtlRmtInf[3]') remittance1AdditionalInf3,
+                                EXTRACTVALUE(t.PROCESSINGDETAILS, '/Trn/OtaDetails/OtpExpiryDate') otpExpiryDate,
+                                EXTRACTVALUE(t.PROCESSINGDETAILS, '/Trn/OtaDetails/OtpExpiryTime') otpExpiryTime,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/RmtInf/Strd[1]/RfrdDocRltdDt') remit1ReferredDocRelatedDate,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/RmtInf/Strd[1]/CdtrRefInf/CdtrRef') remit1CreditPartyReference,
+                                t.LIFECYCLESTATUSIPX lifeCycleStatus,
+                                t.ACCEPTANCEDATETIMEIDX acceptanceDateTime,
+                                EXTRACTVALUE(t.DETAILS, '/Trn/InSttlmDay') incomingSettlementDay
+                                FROM  BPHADMIN.PaymentTransaction t 
+    WHERE UPPER(t.LIFECYCLESTATUSIPX) in ('PENDING')
+    AND t.CLASSIFICATIONIDX in ('RTPBPRequestToPay','RTPBPCreditRequest')
+    AND t.DEBITPARTYCONTACTOTHERIDX ='MOB'
+    AND t.DEBITPARTYIDIDX ='0618429333'       
+    AND TO_TIMESTAMP(TO_CHAR(t.ACCEPTANCEDATETIMEIDX, 'DD-MON-RR HH24:MI:SS'), 'DD-MON-RR HH24:MI:SS') 
+      BETWEEN  TO_TIMESTAMP('01-OCT-17', 'DD-MON-RR HH24:MI:SS') AND TO_TIMESTAMP('03-OCT-17', 'DD-MON-RR HH24:MI:SS')"
+	  
+	  
+	  
+select * from paymenttransaction where CREDITPARTYCONTACTOTHERIDX = 'CID' and CREDITPARTYIDIDX ='e5af4b0dd4e6';
+select * from paymenttransaction where CREDITPARTYCONTACTOTHERIDX = 'MOB' and CREDITPARTYIDIDX ='0638067539';
