@@ -1,0 +1,104 @@
+H.N-25 Second floor, Sector -11 Vasundhra Ghaziabad-201012
+
+H.N -131 SECTOR 9 VASUNDHRA Ghaziabad-201012
+
+Divyanshi Devi
+
+DCEPD5663M
+
+B1-247 , Gali No-8 , New Ashok Nagar , Delhi-110096
+
+HRA: 01-04-2019 30-06-2019   april to jun  18500*3=55500
+
+01-07-2019 30-09-2019    jul - sept 
+
+01-10-2019 31-12-2019    oct -dec   
+
+01-01-2020  31-03-2020   jan -march
+
+
+docker login -u sachink2 docker.clear2pay.com
+docker cp /home/iid/Desktop/opf_jars/OPFPortWebSphere-11.9.4.2-581080.jar 37c1f0681cbe:/opt/ibm/WebSphere/AppServer/lib/ext/
+docker cp /home/iid/Desktop/opf_jars/OPFIdentificationWebSphere-11.9.4.2-581080.jar 37c1f0681cbe:/opt/ibm/WebSphere/AppServer/lib/ext/
+docker cp /home/iid/Desktop/opf_jars/OPFRealm-11.9.4.2-581080.jar 37c1f0681cbe:/opt/ibm/WebSphere/AppServer/lib/ext/
+docker cp /home/iid/Desktop/opf_jars/OPFIdentification-11.9.4.2-581080.jar 37c1f0681cbe:/opt/ibm/WebSphere/AppServer/lib/ext/
+docker cp /home/iid/Desktop/opf_jars/OPFPort-11.9.4.2-581080.jar 37c1f0681cbe:/opt/ibm/WebSphere/AppServer/lib/ext/
+
+
+docker cp was8559-siamph1194:/tmp/PMH_BVA_AUDIT_RECORDS_20210302.txt /home/iid/Desktop/bvaaudit/
+
+select ADT.TOKEN1, ADT.TOKEN2, ADT.USERNAME , ADT.EVENTTIMESTAMP, ADT.ACTION, ADT.REMOTEHOST from AUDITRECORD ADT 
+where (ADT.ACTION = 'Search' OR ADT.ACTION= 'View' OR ADT.ACTION= 'Download')
+and TO_TIMESTAMP(TO_CHAR(ADT.LOGTIMESTAMP, 'DD-MON-RR'), 'DD-MON-RR') 
+BETWEEN  TO_TIMESTAMP('02-March-2021', 'DD-MON-RR') AND TO_TIMESTAMP('02-March-2021', 'DD-MON-RR') 
+and ADT.ENTITYTYPE in ('PaymentTransaction','PaymentInstruction','PaymentInterchange') order by ADT.LOGTIMESTAMP asc;
+
+
+[iid@iid etc]$ su root
+Password: root
+
+
+
+[iid@iid ~]$ cd /etc
+[iid@iid etc]$ su root
+Password: 
+[root@iid etc]# vi hosts
+[root@iid etc]# exit
+exit
+
+
+SELECT fk.owner, fk.constraint_name , fk.table_name
+            FROM all_constraints fk, all_constraints pk
+            WHERE fk.CONSTRAINT_TYPE = 'R' AND
+              pk.owner = 'SIAMPH1194ADMIN' AND
+              fk.r_owner = pk.owner AND
+              fk.R_CONSTRAINT_NAME = pk.CONSTRAINT_NAME AND
+              UPPER(pk.TABLE_NAME) = UPPER('VISIBILITYSERVICE');
+			  
+			  
+JIRA Dashboard Query:
+
+
+project = SIAMPHSUP AND Type = defect AND created > 2017-08-07 AND key not in (SIAMPHSUP-732, SIAMPHSUP-729, SIAMPHSUP-295, SIAMPHSUP-290, SIAMPHSUP-266, SIAMPHSUP-265, SIAMPHSUP-248, SIAMPHSUP-246) AND status not in (Resolved, Closed) ORDER BY key DESC, priority DESC, updated DESC
+
+reporter = currentUser() order by created DESC
+
+project = "SIAMPH – Release 18 (December Release)" and assignee =sachink2
+
+assignee =sachink2
+
+assignee =sachink2 and status !=closed
+
+
+City Bank:
+Ishi@Meni@89
+
+SBI Folio Number: 19620704
+
+
+Permission TO File: 
+
+sudo chmod 777 siamph-whitebox.log 
+sudo chmod 777 *.log 
+
+
+Docker in ROOT:
+docker exec -it -u 0 568c1de3e941 /bin/bash
+
+
+
+Swagger Changes Command:
+
+Run command in RestService Project:
+mvn -Pswagger-generate-api clean
+
+mvn -Pswagger-generate-api compile
+https://wiki.clear2pay.com/display/SIAMPH/Swagger+code+generation 
+http://editor.swagger.io/
+
+
+UAN: 100377983112
+
+
+ ---------Zerodha-----
+ User Id: UL1685
