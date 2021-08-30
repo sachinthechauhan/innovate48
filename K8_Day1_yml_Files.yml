@@ -1,0 +1,74 @@
+[root@vlmazjuly197 e1075868]# ls
+docker-compose  httpd  k8  nodejs-app  test  website
+[root@vlmazjuly197 e1075868]# cd k8
+[root@vlmazjuly197 k8]# ls
+nodelabels.yml  podannotate.yml  podenv.yml  podlabels.yml  podmulcont.yml  pod.yml  rc.yml  rs.yml
+
+-------------------------pod.yml -------------------------
+kind: Pod                               # Object Type
+apiVersion: v1                          # API version
+metadata:                               # Set of data which describes the Object
+  name: testpod                         # Name of the Object
+spec:                                   # Data which describes the state of the Object
+  containers:                           # Data which describes the Container details
+    - name: c00                         # Name of the Container
+      image: ubuntu                     # Base Image which is used to create Container
+      command: ["/bin/bash", "-c", "while true; do echo Hello; sleep 5 ; done"]
+  restartPolicy: Never          		# Defaults to Always
+
+-------------------------podannotate.yml -------------------------
+kind: Pod
+apiVersion: v1
+metadata:
+  name: testpod2
+  annotations:                                 # comments to describe the Object usage
+    description: our first testpod
+spec:
+  containers:
+    - name: c00
+      image: ubuntu
+      tty: true
+      stdin: true
+      command: ["/bin/bash", "-c", "while true; do echo Hello; sleep 5 ; done"]
+
+-------------------------podenv.yml 	-------------------------  
+kind: Pod
+apiVersion: v1
+metadata:
+  name: environments
+spec:
+  containers:
+    - name: c00
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo hello; sleep 5 ; done"]
+      env:                                   	# List of environment variables to be used inside the pod
+      - name: greet
+        value: hello
+
+-------------------------podlabels.yml -------------------------
+kind: Pod
+apiVersion: v1
+metadata:
+  name: labelspod
+  labels:                                        # Specifies the Label details under it
+     app: test
+     env: prd
+spec:
+    containers:
+       - name: c00
+         image: ubuntu
+         command: ["/bin/bash", "-c", "while true; do echo Hello; sleep 5 ; done"]
+
+-------------------------podmulcont.yml-------------------------
+kind: Pod
+apiVersion: v1
+metadata:
+  name: testpod3
+spec:
+  containers:
+    - name: c00
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo Hello; sleep 5 ; done"]
+    - name: c01
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo Hello-Friends; sleep 5 ; done"]
